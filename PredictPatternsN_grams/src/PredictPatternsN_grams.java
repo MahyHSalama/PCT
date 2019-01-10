@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PredictPatternsN_grams {
@@ -60,28 +61,29 @@ public class PredictPatternsN_grams {
 //int temp=0;
 		int indexOfPredictedPattern=0;
 		String PredictedPattern="";
+		ArrayList<String> list = new ArrayList<>();
+		int maxOccurence = 0;
 		
 		int max=ocurrancy.get(0);
 		
 		for (int i = 0; i < ocurrancy.size(); i++) {
-			/*for (int k = i+1; k < ocurrancy.size(); k++) {
-		
-			if(ocurrancy.get(i)< ocurrancy.get(i+1))
-				temp=ocurrancy.get(i);
-			ocurrancy.set(i,ocurrancy.get(i+1));
-			ocurrancy.set(i+1,temp);
-
-		}*/
 			
-		if (ocurrancy.get(i)>max)
-				max=ocurrancy.get(i);
+			if (ocurrancy.get(i)>max)
+					max=ocurrancy.get(i);
 		}
-		
-		indexOfPredictedPattern = ocurrancy.indexOf(max);
-		PredictedPattern = words.get(indexOfPredictedPattern);
-		
-		System.out.println(ngram + " "  + PredictedPattern  );
-	}
+			
+			indexOfPredictedPattern = ocurrancy.indexOf(max);
+			PredictedPattern = words.get(indexOfPredictedPattern);
+			
+			maxOccurence = Collections.max(ocurrancy);
+			
+			for(int k=0; k<ocurrancy.size(); k++) {
+				if(ocurrancy.get(k) == maxOccurence)
+					list.add(words.get(k));
+			}
+			list = sortStringArray(list);
+			System.out.println(ngram + " "  + list.get(0));
+		}
 
 	//public static String[] getPredictedPattern(String ) {
 
@@ -97,4 +99,27 @@ public class PredictPatternsN_grams {
 			return newArray.toArray(new String[newArray.size()]);
 		}
 	}
+	
+	public static ArrayList<String> sortStringArray( ArrayList<String>  x)
+    {
+          int j;
+          boolean flag = true;  // will determine when the sort is finished
+          String temp;
+
+          while ( flag )
+          {
+                flag = false;
+                for ( j = 0;  j < x.size() - 1;  j++ )
+                {
+                        if ( x.get(j).compareToIgnoreCase( x.get(j+1) ) > 0 )
+                        {                                             // ascending sort
+                                    temp = x.get(j);
+                                    x.set(j, x.get(j+1));     // swapping
+                                    x.set(j+1, temp); 
+                                    flag = true;
+                         } 
+                 } 
+          }
+          return x;
+    }
 }
